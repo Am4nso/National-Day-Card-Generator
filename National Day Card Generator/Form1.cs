@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace National_Day_Card_Generator
 {
     public partial class Form1 : Form
     {
-        private PrivateFontCollection foo = new PrivateFontCollection();
+        private PrivateFontCollection fonts = new PrivateFontCollection();
 
         private Font font;
 
@@ -22,9 +17,13 @@ namespace National_Day_Card_Generator
 
         public Form1()
         {
-            foo.AddFontFile("Roboto-Regular.ttf");
+            byte[] fontData = Properties.Resources.Roboto_Regular;
+            IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
+            System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+            fonts.AddMemoryFont(fontPtr, Properties.Resources.Roboto_Regular.Length);
+            Marshal.FreeCoTaskMem(fontPtr);
 
-            font = new Font(foo.Families[0], 18f);
+            font = new Font(fonts.Families[0], 18f);
 
             InitializeComponent();
 
